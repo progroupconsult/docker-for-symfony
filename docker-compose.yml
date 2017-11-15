@@ -37,7 +37,7 @@ services:
         image: centrifugo/centrifugo
         command: centrifugo -c config.yml -w --port=8000  --log_level=debug --debug --insecure --address=0.0.0.0
         ports:
-            - "7000:8000"
+            - "8000:8000"
         volumes:
             - ./centrifugo/config.yml:/centrifugo/config.yml   # centrifugo -c config.json -w /opt/centrifugo/web
     rabbit:

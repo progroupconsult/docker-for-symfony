@@ -1,7 +1,7 @@
 FROM php:7.1-fpm
 ARG TIMEZONE
 
-RUN apt-get update && apt-get install -y vim git unzip openssl libpq-dev
+RUN apt-get update && apt-get install -y nano git unzip openssl libpq-dev
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -34,7 +34,7 @@ RUN pecl install -o -f redis \
 #RUN docker-php-ext-install pcntl
 
 # Create an alias for Symfony3 console
-RUN echo 'alias sf="php bin/console"' >> ~/.bashrc
+#RUN echo 'alias sf="php bin/console"' >> ~/.bashrc
 
 #RUN adduser user
 
