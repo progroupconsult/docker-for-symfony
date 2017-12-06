@@ -36,6 +36,8 @@ RUN pecl install -o -f redis \
 RUN apt-get install libxml2-dev
 RUN docker-php-ext-install soap
 
+RUN docker-php-ext-install bcmath
+
 # Create an alias for Symfony3 console
 #RUN echo 'alias sf="php bin/console"' >> ~/.bashrc
 
