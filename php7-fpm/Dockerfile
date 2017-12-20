@@ -1,48 +1,40 @@
-FROM php:7.1-fpm
+FROM php:7.2-fpm
 ARG TIMEZONE
 
-RUN apt-get update && apt-get install -y nano git unzip openssl libpq-dev
+RUN apt-get update && apt-get install -y nano
+
+# Set timezone
+RUN ln -snf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && echo ${TIMEZONE} > /etc/timezone \
+  && printf '[PHP]\ndate.timezone = "%s"\n', ${TIMEZONE} > /usr/local/etc/php/conf.d/tzone.ini
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-RUN composer --version
 
-# Set timezone
-RUN ln -snf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && echo ${TIMEZONE} > /etc/timezone
-RUN printf '[PHP]\ndate.timezone = "%s"\n', ${TIMEZONE} > /usr/local/etc/php/conf.d/tzone.ini
+RUN  apt-get install -y libpq-dev \
+  libxml2-dev \
+  && docker-php-ext-install \
+    pdo_pgsql \
+    soap \
+    bcmath \
+    opcache \
+    pcntl
 
-# Install PDO extensions
-RUN docker-php-ext-install pdo_pgsql
+RUN apt-get install -y autoconf g++ make git \
+  && docker-php-source extract \
+  && pecl install \
+    redis \
+    apcu \
+  && docker-php-ext-enable \
+    redis \
+    apcu \
+  && docker-php-source delete \
+  && mkdir /src && cd /src && git clone https://github.com/xdebug/xdebug.git && cd xdebug && sh ./rebuild.sh && cd / && rm -fr /src \
+  && rm -rf /tmp/* 
 
-# Install xdebug
-RUN pecl install xdebug
-RUN docker-php-ext-enable xdebug
-RUN echo "error_reporting = E_ALL" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-RUN echo "display_startup_errors = On" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-RUN echo "display_errors = On" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-RUN echo "xdebug.remote_enable=1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-RUN echo "xdebug.remote_connect_back=1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-RUN echo "xdebug.idekey=\"PHPSTORM\"" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-RUN echo "xdebug.remote_port=9001" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+COPY conf.d/* /usr/local/etc/php/conf.d/
 
-# Install redis
-RUN pecl install -o -f redis \
-&&  rm -rf /tmp/pear \
-&&  docker-php-ext-enable redis
+USER www-data
 
-# Install pcntl
-#RUN docker-php-ext-install pcntl
-
-RUN apt-get install libxml2-dev
-RUN docker-php-ext-install soap
-
-RUN docker-php-ext-install bcmath
-
-# Create an alias for Symfony3 console
 #RUN echo 'alias sf="php bin/console"' >> ~/.bashrc
-
-#RUN adduser user
-
-#CMD ["su", "-", "user", "-c", "/bin/bash"]
 
 WORKDIR /var/www/symfony
