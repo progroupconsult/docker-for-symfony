@@ -1,7 +1,9 @@
 FROM php:7.2-fpm
 ARG TIMEZONE
 
-RUN apt-get update && apt-get install -y nano
+RUN apt-get update && \
+    apt-get install -y nano \
+                        sudo
 
 # Set timezone
 RUN ln -snf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && echo ${TIMEZONE} > /etc/timezone \
@@ -32,6 +34,10 @@ RUN apt-get install -y autoconf g++ make git \
   && rm -rf /tmp/* 
 
 COPY conf.d/* /usr/local/etc/php/conf.d/
+
+#RUN echo "www-data:www-data" | chpasswd && adduser www-data sudo
+
+RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 USER www-data
 
