@@ -35,7 +35,7 @@ RUN apt-get install -y autoconf g++ make git \
 
 COPY conf.d/* /usr/local/etc/php/conf.d/
 
-#RUN echo "www-data:www-data" | chpasswd && adduser www-data sudo
+RUN echo "www-data:www-data" | chpasswd && adduser www-data sudo
 
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
