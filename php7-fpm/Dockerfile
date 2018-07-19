@@ -14,7 +14,11 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 RUN  apt-get install -y libpq-dev \
   libxml2-dev \
+  libzip-dev \
+  zip \
+  && docker-php-ext-configure zip --with-libzip \
   && docker-php-ext-install \
+    zip \
     pdo_pgsql \
     soap \
     bcmath \
