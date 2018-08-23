@@ -12,7 +12,8 @@ RUN ln -snf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && echo ${TIMEZONE} >
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-RUN  apt-get install -y libpq-dev \
+RUN  apt-get update && \
+    apt-get install -y libpq-dev \
   libxml2-dev \
   libzip-dev \
   zip \
