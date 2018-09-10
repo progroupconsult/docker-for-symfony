@@ -16,10 +16,12 @@ RUN  apt-get update && \
     apt-get install -y libpq-dev \
   libxml2-dev \
   libzip-dev \
+  libpng-dev \
   zip \
   && docker-php-ext-configure zip --with-libzip \
   && docker-php-ext-install \
     zip \
+    gd \
     pdo_pgsql \
     soap \
     bcmath \
