@@ -1,0 +1,5 @@
+server.name: kibana
+server.host: "0"
+elasticsearch.url: http://10.5.0.7:9200
+xpack.monitoring.ui.container.elasticsearch.enabled: true
+logging.dest: /usr/share/kibana/kibana.log
