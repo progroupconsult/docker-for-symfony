@@ -7,6 +7,13 @@ syncs:
   app-sync:
     src: ${SYMFONY_APP_PATH}
     sync_strategy: 'native_osx'
-    sync_excludes: ['node_modules/', '.git/', '.idea/']
+    sync_excludes:
+        - '.idea'
+        - '.git'
+        - 'var/cache'
+        - 'node_modules'
+        - '.docker-sync'
+    watch_excludes:
+        - 'vendor'
     sync_userid: ${USER_ID}
     sync_groupid: ${GROUP_ID}
