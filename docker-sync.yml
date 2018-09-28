@@ -1,0 +1,12 @@
+version: '2'
+
+options:
+  compose-file-path: docker-compose.yml
+
+syncs:
+  app-sync:
+    src: ${SYMFONY_APP_PATH}
+    sync_strategy: 'native_osx'
+    sync_excludes: ['node_modules/', '.git/', '.idea/']
+    sync_userid: ${USER_ID}
+    sync_groupid: ${GROUP_ID}

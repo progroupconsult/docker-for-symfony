@@ -35,7 +35,7 @@ services:
             vpcbr:
                 ipv4_address: 10.5.0.2
         volumes:
-            - ${SYMFONY_APP_PATH}:/var/www/symfony
+            - app-sync:/var/www/symfony:nocopy  #for docker-sync
             - ./logs/symfony:/var/www/symfony/var/logs
         links:
             - redis
@@ -107,6 +107,8 @@ services:
 volumes:
     esdata1:
         driver: local
+    app-sync:
+        external: true
 
 networks:
     vpcbr:
