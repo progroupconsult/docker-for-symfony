@@ -28,14 +28,16 @@ RUN  apt-get update && \
     opcache \
     pcntl
 
-RUN apt-get install -y autoconf g++ make git \
+RUN apt-get update && apt-get install -y autoconf g++ make git \
   && docker-php-source extract \
   && pecl install \
     redis \
     apcu \
+    mongodb \
   && docker-php-ext-enable \
     redis \
     apcu \
+    mongodb \
   && docker-php-source delete \
   && mkdir /src && cd /src && git clone https://github.com/xdebug/xdebug.git && cd xdebug && sh ./rebuild.sh && cd / && rm -fr /src \
   && rm -rf /tmp/* 

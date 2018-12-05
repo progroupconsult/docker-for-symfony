@@ -104,6 +104,22 @@ services:
         networks:
             vpcbr:
                 ipv4_address: 10.5.0.8
+
+    mongodb:
+        container_name: sf_mongodb
+        image: mongo:4.0
+        environment:
+            MONGO_DATA_DIR: "/data/db"
+            MONGODB_USER: ${MONGO_USER}
+            MONGODB_PASS: ${MONGO_PASSWORD}
+        volumes:
+            - "./data/mongodb:/data/db"
+        ports:
+            - 27017:27017
+        networks:
+            vpcbr:
+                ipv4_address: 10.5.0.9
+
 volumes:
     esdata1:
         driver: local
