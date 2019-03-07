@@ -21,12 +21,12 @@ syncs:
     src: ${MICRO1_APP_PATH}
     sync_strategy: 'native_osx'
     sync_excludes:
-    - '.idea'
-    - '.git'
-    - 'var/cache'
-    - 'node_modules'
-    - '.docker-sync'
+        - '.idea'
+        - '.git'
+        - 'var/cache'
+        - 'node_modules'
+        - '.docker-sync'
     watch_excludes:
-    - 'vendor'
+        - 'vendor'
     sync_userid: ${USER_ID}
     sync_groupid: ${GROUP_ID}
