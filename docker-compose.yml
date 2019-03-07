@@ -119,11 +119,31 @@ services:
         networks:
             vpcbr:
                 ipv4_address: 10.5.0.9
+    micro1php:
+        container_name: micro1_sf_phpfpm
+        build:
+            context: micro1-php7-fpm
+            args:
+                TIMEZONE: ${TIMEZONE}
+        ports:
+            - "8080:8000"
+        networks:
+            vpcbr:
+                ipv4_address: 10.5.0.10
+        volumes:
+            - micro1-app-sync:/var/www/symfony:nocopy  #for docker-sync
+            - ./logs/micro1_symfony:/var/www/symfony/var/logs
+        links:
+            - redis
+            - db
+            - centrifugo
 
 volumes:
     esdata1:
         driver: local
     app-sync:
+        external: true
+    micro1-app-sync:
         external: true
 
 networks:
