@@ -135,8 +135,36 @@ services:
             - ./logs/micro1_symfony:/var/www/symfony/var/logs
         links:
             - redis
-            - db
-            - centrifugo
+    micro2php:
+        container_name: micro2_sf_phpfpm
+        build:
+            context: micro2-php7-fpm
+            args:
+                TIMEZONE: ${TIMEZONE}
+        ports:
+            - "8080:8000"
+        networks:
+            vpcbr:
+                ipv4_address: 10.5.0.11
+        volumes:
+            - micro2-app-sync:/var/www/symfony:nocopy  #for docker-sync
+            - ./logs/micro2_symfony:/var/www/symfony/var/logs
+        links:
+            - micro2db
+    micro2db:
+        container_name: micro2_sf_pgsql
+        image: postgres:9
+        volumes:
+            - "./data/micro2db:/var/lib/postgresql"
+        environment:
+            POSTGRES_DB: ${MICRO2_DB}
+            POSTGRES_USER: ${MICRO2_DB_USER}
+            POSTGRES_PASSWORD: ${MICRO2_DB_PASSWORD}
+        ports:
+            - "5432:5432"
+        networks:
+            vpcbr:
+                ipv4_address: 10.5.0.12
 
 volumes:
     esdata1:
@@ -144,6 +172,8 @@ volumes:
     app-sync:
         external: true
     micro1-app-sync:
+        external: true
+    micro2-app-sync:
         external: true
 
 networks:
