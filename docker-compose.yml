@@ -142,7 +142,7 @@ services:
             args:
                 TIMEZONE: ${TIMEZONE}
         ports:
-            - "8080:8000"
+            - "8088:8000"
         networks:
             vpcbr:
                 ipv4_address: 10.5.0.11
@@ -161,7 +161,7 @@ services:
             POSTGRES_USER: ${MICRO2_DB_USER}
             POSTGRES_PASSWORD: ${MICRO2_DB_PASSWORD}
         ports:
-            - "5432:5432"
+            - "5433:5432"
         networks:
             vpcbr:
                 ipv4_address: 10.5.0.12
