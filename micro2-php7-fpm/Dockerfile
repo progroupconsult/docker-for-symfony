@@ -18,6 +18,7 @@ RUN  apt-get update && \
   libzip-dev \
   libpng-dev \
   zip \
+  procps \
   && docker-php-ext-configure zip --with-libzip \
   && docker-php-ext-install \
     zip \
