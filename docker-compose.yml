@@ -165,6 +165,16 @@ services:
         networks:
             vpcbr:
                 ipv4_address: 10.5.0.12
+    micro3bcw:
+        container_name: micro3_sf_bcw
+        build:
+            context: micro3-bcw
+        ports:
+        - "3000:3000"
+        networks:
+            vpcbr:
+                ipv4_address: 10.5.0.13
+        command: blockchain-wallet-service start --port 3000
 
 volumes:
     esdata1:
