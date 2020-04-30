@@ -175,6 +175,36 @@ services:
             vpcbr:
                 ipv4_address: 10.5.0.13
         command: blockchain-wallet-service start --port 3000
+    micro4php:
+        container_name: micro4_sf_phpfpm
+        build:
+            context: micro4-php7-fpm
+            args:
+                TIMEZONE: ${TIMEZONE}
+        ports:
+            - "8090:8000"
+        networks:
+            vpcbr:
+                ipv4_address: 10.5.0.14
+        volumes:
+            - micro4-app-sync:/var/www/symfony:nocopy  #for docker-sync
+            - ./logs/micro4_symfony:/var/www/symfony/var/logs
+        links:
+            - micro4db
+    micro4db:
+        container_name: micro4_sf_pgsql
+        image: postgres:9
+        volumes:
+            - "./data/micro4db:/var/lib/postgresql"
+        environment:
+            POSTGRES_DB: ${MICRO4_DB}
+            POSTGRES_USER: ${MICRO4_DB_USER}
+            POSTGRES_PASSWORD: ${MICRO4_DB_PASSWORD}
+        ports:
+            - "5436:5432"
+        networks:
+            vpcbr:
+                ipv4_address: 10.5.0.15
 
 volumes:
     esdata1:
@@ -184,6 +214,8 @@ volumes:
     micro1-app-sync:
         external: true
     micro2-app-sync:
+        external: true
+    micro4-app-sync:
         external: true
 
 networks:
